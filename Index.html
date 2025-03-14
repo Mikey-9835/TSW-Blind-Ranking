@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blind Ranking Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        #game-container { max-width: 400px; margin: auto; }
+        #rank-list { list-style: none; padding: 0; }
+        #rank-list li { background: #ddd; padding: 10px; margin: 5px; cursor: grab; }
+    </style>
+</head>
+<body>
+    <h1>Blind Ranking Game</h1>
+    <div id="game-container">
+        <p id="item-display">Click 'Next' to begin!</p>
+        <button onclick="placeItem()">Next</button>
+        <ul id="rank-list"></ul>
+    </div>
+
+    <script>
+        const items = ["Apple", "Banana", "Carrot", "Donut", "Eggplant", "Fish", "Grape", "Hamburger"];
+        let shuffledItems = [...items].sort(() => Math.random() - 0.5);
+        let currentItem = null;
+        
+        function placeItem() {
+            if (shuffledItems.length === 0) {
+                document.getElementById("item-display").innerText = "All items ranked!";
+                return;
+            }
+            currentItem = shuffledItems.pop();
+            document.getElementById("item-display").innerText = `Rank this: ${currentItem}`;
+            
+            let li = document.createElement("li");
+            li.innerText = currentItem;
+            document.getElementById("rank-list").appendChild(li);
+        }
+    </script>
+</body>
+</html>
