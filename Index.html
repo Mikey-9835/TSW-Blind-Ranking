@@ -3,39 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blind Ranking Game</title>
+    <title>Train Sim World Blind Ranking List</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; background-color: #1e1e1e; color: #fff; }
         #game-container { max-width: 400px; margin: auto; }
         #rank-list { list-style: none; padding: 0; }
-        #rank-list li { background: #ddd; padding: 10px; margin: 5px; cursor: grab; }
+        #rank-list li { background: #444; padding: 10px; margin: 5px; cursor: grab; color: #fff; }
+        .rank-slot { background: #666; padding: 10px; margin: 5px; min-height: 20px; border: 1px dashed #aaa; color: #fff; }
+        button { background: #007bff; color: white; border: none; padding: 10px; margin: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
     </style>
 </head>
 <body>
-    <h1>Blind Ranking Game</h1>
+    <h1>Train Sim World Blind Ranking List</h1>
     <div id="game-container">
-        <p id="item-display">Click 'Next' to begin!</p>
-        <button onclick="placeItem()">Next</button>
-        <ul id="rank-list"></ul>
+        <p id="item-display">Click a position to begin!</p>
+        <button onclick="resetGame()">Reset</button>
+        <p>Click on a position to place the item.</p>
+        <ul id="rank-list">
+            <li class="rank-slot" onclick="placeItem(0)">1. </li>
+            <li class="rank-slot" onclick="placeItem(1)">2. </li>
+            <li class="rank-slot" onclick="placeItem(2)">3. </li>
+            <li class="rank-slot" onclick="placeItem(3)">4. </li>
+            <li class="rank-slot" onclick="placeItem(4)">5. </li>
+            <li class="rank-slot" onclick="placeItem(5)">6. </li>
+            <li class="rank-slot" onclick="placeItem(6)">7. </li>
+            <li class="rank-slot" onclick="placeItem(7)">8. </li>
+            <li class="rank-slot" onclick="placeItem(8)">9. </li>
+            <li class="rank-slot" onclick="placeItem(9)">10. </li>
+        </ul>
     </div>
 
     <script>
-        const items = ["Apple", "Banana", "Carrot", "Donut", "Eggplant", "Fish", "Grape", "Hamburger"];
-        let shuffledItems = [...items].sort(() => Math.random() - 0.5);
+        const originalItems = [
+            "Mildmay Line", "F59PHR", "Mittenwaldbahn", "Mainheim to Kaiserslautern", "Preston to Carlisle", "MBTA Commuter", "Amtrak Acela", "Arosa Linie", "Class 390", "Bremen to Oldenburg", "Salzburg to Rosenheim","Bakerloo Line","Bernina Linie","Birmingham Cross City","Blackpool Branches","BNSF SD70ACE","Class 313","Class 31","Class 33","Class 52","BR Heavy Freight","Brighton Main Line","Cajon Pass","Oakville Sibdivision","Cane Creek","Cargo Line Petroleum","Cargo Line Aggregates","Cathcart Circle","Centro Class 323","Class 20","Clinchfield Railroad","CSX C40-8W","DB BR 101 (standard)","DB BR 155","DB BR 182","DB BR 187","DB BR 204","DB BR 218","DB BR 363","DB G6","Diesel Legends","ICE 3 Railbow","Dispolok BR 182","Peterborough to Doncaster","East Coastway","Engineering Express","DB BR 101 (Expert)","Fife Circle","Flixtrain Vectron","Frankfurt to Fulda","Glossop Line","Great Western Express","Harlem Line","Hamburg to Lubeck","Munchen to Augsburg","Hauptstrecke Rhein Ruhr","Horseshoe Curve","BR Class 484","Isle of Wight 2020","LGV Mediterranee","Linke Rheinstrecke","LIRR Commuter","LIRR M3","Flying Scotsman","Suffragette Line","1938 Tube Stock","LIRR 1.0","Main Spessart Bahn","Maintalbahn","Antelope Valley Line","Midland Main Line","Dresden to Riesa","New York to Trenton","Niddertalbahn","Railhead Treatment Train","ROG Class 37/7","Railpool Vectron","Peak Forest","NS Heritage Collection","Boston to Providence","Rapid Transit","RHB Anniversary Collection","Arosa Aggregates","Rhein Ruhr Osten","Ruhr Sieg Nord","San Bernadino","Sand Patch Grade","Santa Fe F7","S Bahn Voralberg","Luzern to Sursee","Kassel to Wurzburg","Koln to Aachen","Scotrail Class 158","Class 380","Edinburgh to Glasgow","Semmeringbahn","Sherman Hill","Southeastern Highspeed","Spirit of Steam","Tees Valley Line","Class 700","Tharandter Rampe","Holiday Express","UP Heritage Collection","London Euston to Milton Keynes","West Cornwall Local","West Cornwall Steam","West Somerset Railway","Cardiff City Network","Zwolle to Groningen",
+            
+        ];
+        let shuffledItems = [];
         let currentItem = null;
         
-        function placeItem() {
-            if (shuffledItems.length === 0) {
-                document.getElementById("item-display").innerText = "All items ranked!";
-                return;
-            }
+        function resetGame() {
+            shuffledItems = [...originalItems].sort(() => Math.random() - 0.5);
             currentItem = shuffledItems.pop();
             document.getElementById("item-display").innerText = `Rank this: ${currentItem}`;
-            
-            let li = document.createElement("li");
-            li.innerText = currentItem;
-            document.getElementById("rank-list").appendChild(li);
+            document.querySelectorAll(".rank-slot").forEach((slot, index) => slot.innerText = `${index + 1}. `);
         }
+        
+        function placeItem(position) {
+            if (!currentItem) return;
+            const slots = document.querySelectorAll(".rank-slot");
+            if (slots[position].innerText.length > 3) return; // Prevent overwriting
+            slots[position].innerText += currentItem;
+            
+            if (shuffledItems.length === 0) {
+                document.getElementById("item-display").innerText = "All items ranked!";
+                currentItem = null;
+            } else {
+                currentItem = shuffledItems.pop();
+                document.getElementById("item-display").innerText = `Rank this: ${currentItem}`;
+            }
+        }
+
+        resetGame();
     </script>
 </body>
 </html>
